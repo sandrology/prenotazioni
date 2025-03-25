@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Prenotazioni</title>
     <meta name="robots" content="noindex">
+    <!-- Favicon - Icona a forma di ingranaggio -->
+    <link rel="icon" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/svgs/solid/gear.svg" type="image/svg+xml">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -25,10 +27,16 @@
 
         .button-container {
             display: flex;
-            flex-direction: column; /* Cambiato a column */
+            flex-direction: column;
             gap: 15px;
             width: 100%;
             max-width: 500px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
         }
 
         .nav-button {
@@ -41,7 +49,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
+            flex-grow: 1;
+            text-align: center;
         }
 
         .nav-button:hover {
@@ -54,16 +63,71 @@
             transform: translateY(0);
         }
 
-        /* Rimossi i media queries per mantenere i pulsanti in colonna */
+        .copy-button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 20px 15px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copy-button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
     <h1>Menu Prenotazioni</h1>
 
     <div class="button-container">
-        <button class="nav-button" onclick="window.location.href='CalendarioPrenotazioni2.html'">Calendario</button>
-        <button class="nav-button" onclick="window.location.href='ListaPrenotazioni2.html'">Lista Prenotazioni</button>
-        <button class="nav-button" onclick="window.location.href='ListaPrenotazioniAnna.html'">Prenotazioni Anna</button>
+        <div class="button-row">
+            <button class="nav-button" onclick="window.location.href='CalendarioPrenotazioni2.html'">Calendario</button>
+            <button class="copy-button" onclick="copyToClipboard('CalendarioPrenotazioni2.html')">Copy</button>
+        </div>
+        
+        <div class="button-row">
+            <button class="nav-button" onclick="window.location.href='ListaPrenotazioni2.html'">Lista Prenotazioni</button>
+            <button class="copy-button" onclick="copyToClipboard('ListaPrenotazioni2.html')">Copy</button>
+        </div>
+        
+        <div class="button-row">
+            <button class="nav-button" onclick="window.location.href='ListaPrenotazioniAnna.html'">Prenotazioni Anna</button>
+            <button class="copy-button" onclick="copyToClipboard('ListaPrenotazioniAnna.html')">Copy</button>
+        </div>
+        
+        <div class="button-row">
+            <button class="nav-button" onclick="window.location.href='https://suitenumero5.it/experiences.html'">Suite 5 Experiences</button>
+            <button class="copy-button" onclick="copyToClipboard('https://suitenumero5.it/experiences.html')">Copy</button>
+        </div>
+        
+        <div class="button-row">
+            <button class="nav-button" onclick="window.location.href='https://suitenumero5.it/'">Suite 5 Home</button>
+            <button class="copy-button" onclick="copyToClipboard('https://suitenumero5.it/')">Copy</button>
+        </div>
     </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Link copiato negli appunti: ' + text);
+            }, function(err) {
+                alert('Errore durante la copia del link: ', err);
+            });
+        }
+    </script>
 </body>
 </html>
