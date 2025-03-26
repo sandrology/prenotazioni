@@ -3,72 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Cookie</title>
+    <title>Gestione Local Storage</title>
     <script>
-        // Funzione per impostare un cookie
-        function setCookie(nome, valore, giorni) {
-            var dataScadenza = new Date();
-            dataScadenza.setTime(dataScadenza.getTime() + (giorni * 24 * 60 * 60 * 1000));
-            var scadenza = "expires=" + dataScadenza.toUTCString();
-            document.cookie = nome + "=" + valore + ";" + scadenza + ";path=/";
-        }
-
-        // Funzione per ottenere il valore di un cookie
-        function getCookie(nome) {
-            var nomeCookie = nome + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(nomeCookie) == 0) {
-                    return c.substring(nomeCookie.length, c.length);
-                }
-            }
-            return "";
-        }
-
-        // Funzione per eliminare un cookie
-        function deleteCookie(nome) {
-            setCookie(nome, "", -1);
-        }
-
-        // Funzione per gestire l'inserimento della chiave
-        function gestisciChiave() {
+        // Funzione per impostare un elemento nel localStorage
+        function setLocalStorageItem() {
             var chiave = document.getElementById("chiaveInput").value;
-            if (chiave) {
-                setCookie("chiaveUtente", chiave, 7); // Salva la chiave per 7 giorni
-                alert("Chiave salvata!");
+            var valore = document.getElementById("valoreInput").value;
+            if (chiave && valore) {
+                localStorage.setItem(chiave, valore);
+                alert("Elemento salvato nel localStorage!");
+                mostraElementiLocalStorage(); // Ricarica la lista degli elementi
             } else {
-                alert("Inserisci una chiave valida.");
+                alert("Inserisci sia una chiave che un valore.");
             }
         }
 
-        // Funzione per eliminare la chiave
-        function eliminaChiave() {
-            deleteCookie("chiaveUtente");
-            alert("Chiave eliminata!");
+        // Funzione per eliminare un elemento dal localStorage
+        function eliminaElementoLocalStorage(chiave) {
+            localStorage.removeItem(chiave);
+            alert("Elemento eliminato dal localStorage!");
+            mostraElementiLocalStorage(); // Ricarica la lista degli elementi
         }
 
-        // Funzione per visualizzare la chiave salvata
-        function mostraChiave() {
-            var chiave = getCookie("chiaveUtente");
-            if (chiave) {
-                alert("Chiave salvata: " + chiave);
-            } else {
-                alert("Nessuna chiave salvata.");
+        // Funzione per visualizzare gli elementi nel localStorage
+        function mostraElementiLocalStorage() {
+            var lista = document.getElementById("listaElementi");
+            lista.innerHTML = ""; // Pulisce la lista esistente
+            for (var i = 0; i < localStorage.length; i++) {
+                var chiave = localStorage.key(i);
+                var valore = localStorage.getItem(chiave);
+                var li = document.createElement("li");
+                li.textContent = "Chiave: " + chiave + " | Valore: " + valore;
+                var btnElimina = document.createElement("button");
+                btnElimina.textContent = "Elimina";
+                btnElimina.onclick = (function(chiave) {
+                    return function() {
+                        eliminaElementoLocalStorage(chiave);
+                    };
+                })(chiave);
+                li.appendChild(btnElimina);
+                lista.appendChild(li);
             }
         }
+
+        // Carica gli elementi del localStorage al caricamento della pagina
+        window.onload = function() {
+            mostraElementiLocalStorage();
+        };
     </script>
 </head>
 <body>
-    <h1>Gestione Cookie</h1>
-    <label for="chiaveInput">Inserisci una chiave:</label>
+    <h1>Gestione Local Storage</h1>
+    <label for="chiaveInput">Chiave:</label>
     <input type="text" id="chiaveInput">
-    <button onclick="gestisciChiave()">Salva Chiave</button>
-    <button onclick="eliminaChiave()">Elimina Chiave</button>
-    <button onclick="mostraChiave()">Mostra Chiave</button>
+    <br>
+    <label for="valoreInput">Valore:</label>
+    <input type="text" id="valoreInput">
+    <br>
+    <button onclick="setLocalStorageItem()">Salva Elemento</button>
+    <h2>Elementi nel localStorage:</h2>
+    <ul id="listaElementi"></ul>
 </body>
 </html>
